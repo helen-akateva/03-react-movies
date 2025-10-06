@@ -12,9 +12,9 @@ import { useState } from "react";
 export default function App() {return (
     <div className={css.app}>
         <SearchBar />
-        < MovieGrid />
-        < Loader />
-        < ErrorMessage />
-        < MovieModal />
+        {/* < MovieGrid /> */}
+        {/* < Loader /> */}
+        {/* < ErrorMessage /> */}
+        {/* < MovieModal /> */}
         
     </div>)}
