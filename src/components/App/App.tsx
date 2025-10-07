@@ -9,32 +9,36 @@ import { fetchMovies } from "../../services/movieService";
 import type { Movie } from "../../types/movie";
 import css from "./App.module.css";
 
-export  default function App() {
+export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const handleSubmit = async (query: string) => {
-    setError(false);
-    setMovies([]);
-    setLoading(true);
+ const handleSubmit = async (query: string) => {
+  setError(false);
+  setMovies([]);
+  setLoading(true);
 
-    try {
-      const data = await fetchMovies(query);
+  try {
+    const data = await fetchMovies(query);
 
-      if (data.results.length === 0) {
-        toast.error("No movies found for your request.");
-        return;
-      }
+    
+    const validMovies = data.results.filter(movie => movie.poster_path);
 
-      setMovies(data.results);
-    } catch {
-      setError(true);
-    } finally {
-      setLoading(false);
+    if (validMovies.length === 0) {
+      toast.error("No movies found for your request.");
+      return;
     }
-  };
+
+    setMovies(validMovies);
+    
+  } catch {
+    setError(true);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSelect = (movie: Movie) => {
     setSelectedMovie(movie);
