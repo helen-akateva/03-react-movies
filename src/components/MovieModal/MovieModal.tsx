@@ -26,7 +26,10 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget === e.target) onClose();
   };
-
+  const imageUrl = movie.backdrop_path
+    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+    : `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  
   return createPortal(
     <div
       className={css.backdrop}
@@ -42,13 +45,9 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
         >
           &times;
         </button>
-        {movie.backdrop_path && (
-          <img
-            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-            alt={movie.title}
-            className={css.image}
-          />
-        )}
+
+        <img src={imageUrl} alt={movie.title} className={css.image} />
+
         <div className={css.content}>
           <h2>{movie.title}</h2>
           <p>{movie.overview}</p>
