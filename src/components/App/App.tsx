@@ -15,30 +15,31 @@ export default function App() {
   const [error, setError] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
- const handleSubmit = async (query: string) => {
-  setError(false);
-  setMovies([]);
-  setLoading(true);
+  const handleSubmit = async (query: string) => {
+    setError(false);
+    setMovies([]);
+    setLoading(true);
 
-  try {
-    const data = await fetchMovies(query);
+    try {
+      const data = await fetchMovies(query);
 
-    
-    const validMovies = data.results.filter(movie => movie.poster_path);
+      // Фільтруємо: мають бути І poster_path І backdrop_path
+      const validMovies = data.results.filter(
+        (movie) => movie.poster_path && movie.backdrop_path
+      );
 
-    if (validMovies.length === 0) {
-      toast.error("No movies found for your request.");
-      return;
+      if (validMovies.length === 0) {
+        toast.error("No movies found for your request.");
+        return;
+      }
+
+      setMovies(validMovies);
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
     }
-
-    setMovies(validMovies);
-    
-  } catch {
-    setError(true);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleSelect = (movie: Movie) => {
     setSelectedMovie(movie);
